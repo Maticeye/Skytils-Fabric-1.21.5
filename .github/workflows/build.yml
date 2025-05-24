@@ -1,0 +1,30 @@
+name: Build Fabric Mod
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    name: Gradle Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Gradle
+        run: ./gradlew clean build --no-daemon
+
+      - name: Upload jar artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Skytils-Fabric-jar
+          path: build/libs/*.jar
